@@ -1,7 +1,7 @@
 import express from "express";
 import basicAuth from "express-basic-auth";
 import ordersRouter from "./src/routes/orders.js";
-import { updateOrders } from "./src/services/orderServices.js";
+import { fetchOrders, updateOrders } from "./src/services/orderServices.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -20,7 +20,11 @@ app.use(
 app.use("/api/orders", ordersRouter);
 
 (async () => {
-  await updateOrders();
+  try {
+    await updateOrders();
+  } catch (error) {
+    console.error("Error at the beginning of fetching the data:", error.message);
+  }
 })();
 
 app.listen(PORT, () => {
